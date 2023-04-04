@@ -1,42 +1,38 @@
-import { useState } from "react";
-import axios from "axios"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import { BlogForm } from "./components/BlogForm";
+import { NavBar } from "./components/NavBar";
+import { routes } from "./routes";
+
 
 function App() {
   // setNumber는 함수
   // useState를 사용하면 리액트는 렌더링 됌
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const onSubmit = () => {
-    axios.post("http://localhost:3001/posts", {
-      title,
-      body
-    })
-  };
 
   return (
-    <>
+    <Router>
+      <NavBar />
       <div className="container">
-        <div className="mb-3">
-          <label className="form-label">Title</label>
-          <input
-            className="form-control" value={title}
-            onChange={(event) => {
-              setTitle(event.target.value);
-            }} />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Body</label>
-          <textarea
-            className="form-control" value={body}
-            onChange={(event) => {
-              setBody(event.target.value);
-            }}
-            rows="20" />
-        </div>
-        <button className="btn btn-primary" onClick={onSubmit}>Post</button>
+        <Switch>
+          {routes.map((route) => {
+            return <Route key={route.path} exact path={route.path} component={route.component} />
+          })}
+        </Switch>
       </div>
-    </>
+    </Router>
   )
 }
 
-export default App;
+export default App; 
+
+{/* <Route path="/" exact>
+  <HomePage />
+</Route>,
+<Route path="/blogs" exact>
+  <ListPage />
+</Route>,
+<Route path="/blogs/create" exact>
+  <CreatePage />
+</Route>,
+<Route path="/blogs/edit" exact>
+  <EditPage />
+</Route> */}
